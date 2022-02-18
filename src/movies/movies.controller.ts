@@ -1,29 +1,37 @@
-import { Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 
 @Controller('movies')
 export class MoviesController {
   @Get()
   getAll() {
-    return "This will return all movies";
+    return 'This will return all movies';
   }
 
-  @Get("/:id")
-  getOne(@Param("id") movieId: string) {
+  @Get('search')
+  search(@Query('year') seachingYear: string) {
+    return `We are searching for a movie with a title: ${seachingYear}`;
+  }
+
+  @Get('/:id')
+  getOne(@Param('id') movieId: string) {
     return `This will return one movie id: ${movieId}`;
   }
 
   @Post()
-  create() {
-    return "This will create a movie";
+  create(@Body() movieData) {
+    return movieData;
   }
 
-  @Delete("/:id")
-  remove(@Param("id") movieId: string) {
+  @Delete('/:id')
+  remove(@Param('id') movieId: string) {
     return `This will delete a movie id : ${movieId}`;
   }
 
-  @Patch("/:id")
-  patch(@Param("id") movieId: string) {
-    return `This will update a movie with the id: ${movieId}`;
+  @Patch('/:id')
+  patch(@Param('id') movieId: string, @Body() updateData) {
+    return {
+      updatedMovie: movieId,
+      ...updateData,
+    };
   }
 }
